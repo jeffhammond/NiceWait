@@ -11,17 +11,20 @@ CFLAGS += -Wall -Wextra -Wunused -Wformat
 CFLAGS += -Werror
 
 # which sleep to use
-#CFLAGS += -DHAVE_NANOSLEEP
-CFLAGS += -DHAVE_USLEEP
+CFLAGS += -DHAVE_NANOSLEEP
+#CFLAGS += -DHAVE_USLEEP
 # required for USLEEP
 CFLAGS += -DHAVE_UNISTD_H
 
-all: nicewait.o test
+# Debug printing
+#CFLAGS += -DNICEWAIT_DEBUG
+
+all: nicewait.o test.x
 
 nicewait.o : nicewait.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-test : test.c nicewait.o
+test.x : test.c nicewait.o
 	$(CC) $(CFLAGS) $< nicewait.o -o $@
 
 check: test
@@ -29,6 +32,6 @@ check: test
 
 clean:
 	-rm -f nicewait.o
-	-rm -f test
+	-rm -f test.x
 	-rm -rf *.dSYM
 
